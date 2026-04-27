@@ -7,11 +7,14 @@ pipeline {
             }
         }
         stage('Test') {
-            steps {
-                sh 'touch tests/__init__.py'
-                sh 'python3 -m unittest discover tests'
-            }
-        }
+    steps {
+        echo 'Installing dependencies and running tests...'
+        // This ensures selenium is present every time the build runs
+        sh 'pip install selenium' 
+        sh 'touch tests/__init__.py'
+        sh 'python3 -m unittest discover tests'
+    }
+}
         stage('Deploy') {
             steps {
                 sh 'kubectl apply -f k8s.yaml'
