@@ -16,17 +16,23 @@ pipeline {
             }
         }
         
-        stage('Test') {
+       stage('Test') {
             steps {
-                echo 'Installing dependencies and running Selenium UI Tests...'
-                // Install Selenium for the isolated Jenkins user environment
-                sh 'pip3 install selenium --break-system-packages'
-                
-                // Ensure Python recognizes the tests folder
-                sh 'touch tests/__init__.py'
-                
-                // Discover and execute all tests
-                sh 'python3 -m unittest discover tests'
+                echo 'Setting up Virtual Environment and running UI Tests...'
+                sh '''
+                    # 1. Create a virtual environment named 'test_env'
+                    python3 -m venv test_env
+                    
+                    # 2. Activate the environment
+                    . test_env/bin/activate
+                    
+                    # 3. Install Selenium safely inside the bubble (no system warnings)
+                    pip install selenium
+                    
+                    # 4. Prepare and run the tests
+                    touch tests/__init__.py
+                    python3 -m unittest discover tests
+                '''
             }
         }
         
