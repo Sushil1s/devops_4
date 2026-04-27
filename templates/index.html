@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>DevOps Data Converter</title>
+    <style>
+        .clock { position: absolute; top: 10px; right: 10px; font-family: monospace; }
+        .calc-container { width: 300px; margin: 100px auto; border: 2px solid #333; padding: 20px; border-radius: 10px; }
+        input { width: 90%; font-size: 20px; margin-bottom: 10px; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
+    </style>
+</head>
+<body>
+    <div id="clock" class="clock"></div>
+    <div class="calc-container">
+        <input type="number" id="inputVal" placeholder="Enter MB Value">
+        <div class="grid">
+            <button onclick="setUnit('Bit')">to Bit</button>
+            <button onclick="setUnit('Byte')">to Byte</button>
+            <button onclick="setUnit('KB')">to KB</button>
+            <button onclick="setUnit('GB')">to GB</button>
+            <button onclick="setUnit('TB')">to TB</button>
+            <button onclick="execute()">=</button>
+        </div>
+        <h3 id="result">Result: ---</h3>
+    </div>
+
+    <script>
+        let selectedUnit = 'GB';
+        function setUnit(u) { selectedUnit = u; }
+        function updateClock() { document.getElementById('clock').innerText = new Date().toLocaleString(); }
+        setInterval(updateClock, 1000);
+
+        function execute() {
+            const val = document.getElementById('inputVal').value;
+            fetch('/convert', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({value: val, unit: selectedUnit})
+            }).then(res => res.json()).then(data => {
+                document.getElementById('result').innerText = "Result: " + data.result;
+            });
+        }
+    </script>
+</body>
+</html>
