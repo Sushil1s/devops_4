@@ -6,14 +6,15 @@ pipeline {
                 sh 'docker build -t yourusername/devops_4:latest .'
             }
         }
-        stage('Test') {
-    steps {
-        echo 'Installing dependencies and running tests...'
-        // This ensures selenium is present every time the build runs
-        sh 'pip install selenium' 
-        sh 'touch tests/__init__.py'
-        sh 'python3 -m unittest discover tests'
-    }
+    stage('Test') {
+        steps {
+            echo 'Installing dependencies and running tests...'
+            // Fix: Changed 'pip' to 'pip3'
+            sh 'pip3 install selenium --break-system-packages' 
+            sh 'touch tests/__init__.py'
+            sh 'python3 -m unittest discover tests'
+        }
+}
 }
         stage('Deploy') {
             steps {
