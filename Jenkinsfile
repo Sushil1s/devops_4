@@ -8,14 +8,14 @@ pipeline {
             }
         }
         
-        stage('Build') {
-            steps {
-                echo 'Building Docker Image...'
-                // IMPORTANT: Replace 'yourusername' with your actual Docker Hub username
-                sh 'docker build -t sushilchavan02/devops_4:latest .'
-            }
+    stage('Build') {
+        steps {
+            echo 'Building and Pushing Docker Image...'
+            sh 'docker build -t sushilchavan02/devops_4:latest .'
+            sh 'docker push sushilchavan02/devops_4:latest' 
         }
-        
+    }
+            
     stage('Test') {
             steps {
                 echo 'Starting Test Container and Running UI Tests...'
