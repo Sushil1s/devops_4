@@ -12,7 +12,7 @@ pipeline {
             steps {
                 echo 'Building Docker Image...'
                 // IMPORTANT: Replace 'yourusername' with your actual Docker Hub username
-                sh 'docker build -t yourusername/devops_4:latest .'
+                sh 'docker build -t sushilchavan02/devops_4:latest .'
             }
         }
         
